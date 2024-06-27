@@ -1,2 +1,2 @@
 # terraform-modules
-This repostory house terraform modules
+This repository houses terraform modules
