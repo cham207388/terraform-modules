@@ -10,3 +10,7 @@ output "db_username" {
   value = var.db_username
 }
 
+output "pg_url" {
+  value = aws_db_instance.postgres.endpoint
+}
+
