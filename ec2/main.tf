@@ -2,7 +2,14 @@ resource "aws_instance" "ec2" {
   ami                         = var.ami
   instance_type               = var.instance_type
   vpc_security_group_ids      = var.vpc_security_group_ids
-  user_data                   = file("ec2-user-data.sh")
+  user_data                   = <<-EOF
+              #!/bin/bash
+              sudo yum update -y
+              sudo yum install -y httpd
+              sudo systemctl start httpd
+              sudo systemctl enable httpd
+              echo "<h1>Hello World from $(hostname -f)</h1> > /var/www/html/index.html
+              EOF
   subnet_id                   = var.subnet_id
   associate_public_ip_address = var.associate_public_ip_address
   tags                        = var.tags
