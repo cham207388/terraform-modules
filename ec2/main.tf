@@ -7,4 +7,14 @@ resource "aws_instance" "ec2" {
   associate_public_ip_address = var.associate_public_ip
   tags                        = var.tags
   key_name                    = var.key_name
+  iam_instance_profile        = aws_iam_instance_profile.role_profile.id
+}
+
+resource "aws_iam_instance_profile" "role_profile" {
+  name = "role_profile"
+  role = aws_iam_role.ec2.name
+}
+
+resource "aws_instance" "instance" {
+  iam_instance_profile = aws_iam_instance_profile.role_profile.name
 }
