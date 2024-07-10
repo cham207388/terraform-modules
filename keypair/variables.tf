@@ -1,4 +1,4 @@
-variable "key-name" {
+variable "key_name" {
   default = "generated-key"
 }
 
