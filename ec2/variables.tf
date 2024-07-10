@@ -7,7 +7,6 @@ variable "instance_type" {
 variable "vpc_security_group_ids" {
   type = list(any)
 }
-variable "user_data" {}
 variable "associate_public_ip_address" {
   type = bool
 }
