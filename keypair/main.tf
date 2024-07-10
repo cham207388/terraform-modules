@@ -11,5 +11,5 @@ resource "aws_key_pair" "generated_key" {
 # Save the private key locally
 resource "local_file" "private_key" {
   content  = tls_private_key.rsa.private_key_pem
-  filename = "${path.module}/${aws_key_pair.generated_key.key_name}.pem"
+  filename = var.filename
 }
