@@ -6,12 +6,12 @@ resource "aws_instance" "my_instance" {
   vpc_security_group_ids      = var.vpc_security_group_ids
   key_name                    = var.key_name
   user_data                   = file("${path.module}/ec2-user-data.sh")
-  iam_instance_profile        = aws_iam_instance_profile.role_profile.id
-  tags                        = var.tags
+  # iam_instance_profile        = aws_iam_instance_profile.role_profile.id
+  tags = var.tags
 }
 
 
-resource "aws_iam_instance_profile" "role_profile" {
-  name = "ec2-profile"
-  role = aws_iam_role.this.name
-}
+# resource "aws_iam_instance_profile" "role_profile" {
+#   name = "ec2-profile"
+#   role = aws_iam_role.this.name
+# }
