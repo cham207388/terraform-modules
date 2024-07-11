@@ -24,7 +24,7 @@ resource "aws_instance" "my_instance" {
   associate_public_ip_address = var.associate_public_ip_address
   vpc_security_group_ids      = var.vpc_security_group_ids
   key_name                    = var.key_name
-  user_data                   = file("user-data.sh")
+  user_data                   = file("${path.module}/ec2-user-data.sh")
 
   tags = var.tags
 }
