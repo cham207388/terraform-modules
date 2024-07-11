@@ -1,5 +1,5 @@
 resource "aws_iam_role" "this" {
-  name = "EC2 role tf"
+  name = "EC2-role-tf"
 
   assume_role_policy = jsonencode(
     {
