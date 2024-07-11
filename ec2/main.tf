@@ -12,6 +12,6 @@ resource "aws_instance" "my_instance" {
 
 
 resource "aws_iam_instance_profile" "role_profile" {
-  name = "ec2 profile"
+  name = "ec2-profile"
   role = aws_iam_role.this.name
 }
