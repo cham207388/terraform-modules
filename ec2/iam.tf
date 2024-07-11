@@ -1,5 +1,5 @@
-resource "aws_iam_role" "ec2" {
-  name = "EC2_Role"
+resource "aws_iam_role" "this" {
+  name = "EC2 role tf"
 
   assume_role_policy = jsonencode(
     {
@@ -15,11 +15,11 @@ resource "aws_iam_role" "ec2" {
   })
 
   tags = {
-    Name = "EC2 role"
+    Name = "EC2 role tf"
   }
 }
 
 resource "aws_iam_role_policy_attachment" "eks-cluster-policy-attachment" {
-  role       = aws_iam_role.ec2.id
+  role       = aws_iam_role.this.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
 }
