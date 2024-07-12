@@ -6,7 +6,7 @@ variable "enabled_deletion_protection" {
 
 variable "db_name" {}
 
-variable "db_username" {
+variable "username" {
   default = "admin"
 }
 
@@ -21,12 +21,28 @@ variable "vpc_cidr" {
 variable "protocol" {
   default = "tcp"
 }
+variable "identifier" {
+  default = "database-1"
+}
+variable "engine_version" {
+  default = "15.5"
+}
 
 variable "db_instance_class" {}
 variable "allocated_storage" {
-  type = number
+  type    = number
+  default = 50
 }
 variable "subnet_ids" {}
 variable "security_group_ids" {
   type = list(string)
+}
+variable "allow_major_version_upgrade" {
+  type = bool
+}
+variable "multi_az" {
+  type = bool
+}
+variable "publicly_accessible" {
+  type = bool
 }
