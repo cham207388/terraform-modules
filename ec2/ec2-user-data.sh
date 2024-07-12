@@ -5,4 +5,4 @@ yum update -y
 yum install -y httpd
 systemctl start httpd
 systemctl enable httpd
-echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+echo "<h1>Hello World from $(hostname -f) in $EC2_AVAIL_ZONE AZ</h1>" > /var/www/html/index.html
