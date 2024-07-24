@@ -38,10 +38,10 @@ variable "security_group_ids" {
   type = list(string)
 }
 variable "allow_major_version_upgrade" {
-  type = bool
+  default = true
 }
 variable "multi_az" {
-  type = bool
+  default = true
 }
 variable "publicly_accessible" {
   type = bool
