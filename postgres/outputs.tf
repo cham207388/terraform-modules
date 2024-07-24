@@ -17,3 +17,6 @@ output "pg_url" {
   value = aws_db_instance.postgres.endpoint
 }
 
+output "random_password" {
+  value = random_password.pg-random-password.result
+}
