@@ -1,4 +1,4 @@
-variable "vpc_id" {}
+#variable "vpc_id" {}
 
 variable "enabled_deletion_protection" {
   default = true
