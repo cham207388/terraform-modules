@@ -1,6 +1,6 @@
 # PostgreSQL Usage
 
-```
+```bash
 module "postgres" {
   source              = "git@github.com:cham207388/terraform-modules.git//postgres?ref=main"
   db_name             = var.db_name
