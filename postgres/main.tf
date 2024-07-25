@@ -1,43 +1,30 @@
 resource "aws_db_instance" "postgres" {
   allocated_storage      = var.allocated_storage
   instance_class         = var.db_instance_class
-  engine                 = "postgres"
+  engine                 = var.engine
   engine_version         = var.engine_version
   identifier             = var.identifier
   db_name                = var.db_name
   username               = var.username
-  password               = random_password.pg-random-password.result
+  password               = var.password
   db_subnet_group_name   = aws_db_subnet_group.postgres.name
   vpc_security_group_ids = var.security_group_ids
 
-  skip_final_snapshot                 = true
+  skip_final_snapshot                 = var.skip_final_snapshot
   publicly_accessible                 = var.publicly_accessible
   iam_database_authentication_enabled = false
-  deletion_protection                 = false
+  deletion_protection                 = var.deletion_protection
 
   allow_major_version_upgrade = var.allow_major_version_upgrade
   multi_az                    = var.multi_az
 
-  maintenance_window       = "Sun:00:00-Sun:03:00"
+  maintenance_window       = var.maintenance_window
   backup_retention_period  = 1
-  delete_automated_backups = true
-  backup_window            = "03:00-06:00"
-}
-
-resource "random_password" "pg-random-password" {
-  length  = 12
-  special = false
+  delete_automated_backups = var.delete_automated_backups
+  backup_window            = var.backup_window
 }
 
 resource "aws_db_subnet_group" "postgres" {
   name       = "postgres-subnet-group"
   subnet_ids = var.subnet_ids
-}
-
-output "db_instance_endpoint" {
-  value = aws_db_instance.postgres.endpoint
-}
-
-output "db_instance_id" {
-  value = aws_db_instance.postgres.id
 }

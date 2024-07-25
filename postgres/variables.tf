@@ -1,21 +1,33 @@
-#variable "vpc_id" {}
+variable "db_name" { type = string }
+variable "username" { type = string }
+variable "password" { type = string }
 
-variable "enabled_deletion_protection" {
-  default = true
+variable "security_group_ids" {
+  type = list(string)
+}
+variable "publicly_accessible" {
+  type = bool
 }
 
-variable "db_name" {}
+variable "deletion_protection" {
+  default = false
+}
+variable "engine" {
+  default = "postgres"
+}
+variable "maintenance_window" {
+  default = "Sun:00:00-Sun:03:00"
+}
 
-variable "username" {
-  default = "admin"
+variable "backup_window" {
+  default = "03:00-06:00"
+}
+variable "delete_automated_backups" {
+  default = true
 }
 
 variable "db_port" {
   default = "5432"
-}
-
-variable "vpc_cidr" {
-  default = "10.0.0.0/16"
 }
 
 variable "protocol" {
@@ -34,15 +46,13 @@ variable "allocated_storage" {
   default = 50
 }
 variable "subnet_ids" {}
-variable "security_group_ids" {
-  type = list(string)
-}
+
 variable "allow_major_version_upgrade" {
   default = true
 }
 variable "multi_az" {
   default = true
 }
-variable "publicly_accessible" {
-  type = bool
+variable "skip_final_snapshot" {
+  default = true
 }
