@@ -16,7 +16,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy_attachment" {
 }
 
 # This policy allows EKS to manage VPC resources, such as elastic network interfaces, on your behalf.
-resource "aws_iam_role_policy_attachment" "eks_cluster_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "eks_vpc_cluster_policy_attachment" {
   role       = aws_iam_role.eks_learning.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
 }
