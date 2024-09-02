@@ -1,10 +1,12 @@
 variable "region" {
   description = "aws region"
 }
+
 variable "cluster_name" {
   default     = "learning-cluster"
   description = "eks cluster name"
 }
+
 variable "namespace" {
   default     = "default"
   description = "eks cluster namespace"
