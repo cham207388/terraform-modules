@@ -4,7 +4,7 @@ resource "aws_eks_cluster" "learning" {
   role_arn = aws_iam_role.eks_learning.arn
 
   vpc_config {
-    subnet_ids             = [aws_security_group.eks_control_plane_sg.id]
+    subnet_ids             = aws_subnet.eks_subnet[*].id
     endpoint_public_access = true
     public_access_cidrs    = [var.cidr_all]
   }

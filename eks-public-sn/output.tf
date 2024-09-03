@@ -5,3 +5,7 @@ output "endpoint" {
 output "kubeconfig-certificate-authority-data" {
   value = aws_eks_cluster.learning.certificate_authority[0].data
 }
+
+output "subnet_ids" {
+  value = aws_subnet.eks_subnet[*].id
+}
