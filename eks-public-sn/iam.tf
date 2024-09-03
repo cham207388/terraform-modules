@@ -2,7 +2,7 @@
 resource "aws_iam_role" "eks_learning" {
   name = "learning_EKS_Cluster_Role"
 
-  assume_role_policy = file("./policy/eks-policy.json")
+  assume_role_policy = file("${path.module}/policy/eks-policy.json")
 
   tags = {
     tag-key = "EKS role"
@@ -25,7 +25,7 @@ resource "aws_iam_role_policy_attachment" "eks_vpc_cluster_policy_attachment" {
 resource "aws_iam_role" "node_group_learning" {
   name = "learning_EKS_Managed_Nodegroup_Role"
 
-  assume_role_policy = file("./policy/node-group-policy.json")
+  assume_role_policy = file("${path.module}/policy/node-group-policy.json")
 
   tags = {
     tag-key = "Node Group role"

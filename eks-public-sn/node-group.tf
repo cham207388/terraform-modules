@@ -13,7 +13,7 @@ resource "aws_eks_node_group" "application_managed_workers" {
   }
 
   remote_access {
-    ec2_ssh_key               = module.keypair.key_name
+    ec2_ssh_key               = var.key_name
     source_security_group_ids = [aws_security_group.eks_node_sg.id]
   }
 
