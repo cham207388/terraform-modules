@@ -34,4 +34,6 @@ override.tf.json
 terraform.rc
 
 **/.terraform.lock.hcl
+vpc-3-tier-bastion-ec2-sg/generated.pem
 vpc-3-tier-bastion-ec2-sg/.terraform.lock.hcl
+vpc-3-tier-bastion-ec2-sg/creation-time-vpc-id.txt
