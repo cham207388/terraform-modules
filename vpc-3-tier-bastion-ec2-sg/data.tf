@@ -18,4 +18,6 @@ locals {
     Environment = "local"
     Terraform   = "true"
   }
+
+  keypair = "${path.module}/${module.keypair.key_name}.pem"
 }
