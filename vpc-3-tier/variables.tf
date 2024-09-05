@@ -11,9 +11,15 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
-# Business Division
-variable "business_divsion" {
-  description = "Business Division in the large organization this Infrastructure belongs"
+
+variable "number_of_subnets" {
+  description = "The number of subnets"
+  type        = number
+  default     = 2
+}
+
+variable "vpc_cidr" {
+  description = "The VPC cidr block"
   type        = string
-  default     = "Progress"
+  default     = "10.0.0.0/16"
 }
