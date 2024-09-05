@@ -37,10 +37,7 @@ module "vpc" {
     Name = "database-subnets"
   }
 
-  tags = {
-    Owner       = "cham207388"
-    Environment = "local"
-  }
+  tags = local.tags
 
   vpc_tags = {
     Name = "vpc-dev"
