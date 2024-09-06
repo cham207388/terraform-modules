@@ -15,6 +15,11 @@ output "database_subnet_cidrs" {
 output "key_name" {
   value = module.keypair.key_name
 }
+
+output "pemfile" {
+  value = local.pemfile
+}
+
 output "eip" {
   value = aws_eip.bastion_eip.public_ip
 }

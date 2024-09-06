@@ -35,12 +35,12 @@ resource "null_resource" "copy_ec2_keypair" {
 
   provisioner "file" {
     source      = module.keypair.key_name
-    destination = "/tmp/${module.keypair.key_name}"
+    destination = "/tmp/${local.pemfile}"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "sudo chmod 400 /tmp/${module.keypair.key_name}"
+      "sudo chmod 400 /tmp/${local.pemfile}"
     ]
   }
 
