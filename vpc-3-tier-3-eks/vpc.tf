@@ -3,10 +3,12 @@ module "vpc" {
   version = "5.13.0"
 
   # VPC Basic Details
-  name            = "vpc-dev"
-  cidr            = var.vpc_cidr
-  azs             = local.selected_azs
-  public_subnets  = local.public_subnet_cidrs
+  name                    = "vpc-dev"
+  cidr                    = var.vpc_cidr
+  azs                     = local.selected_azs
+  public_subnets          = local.public_subnet_cidrs
+  map_public_ip_on_launch = true
+
   private_subnets = local.private_subnet_cidrs
 
   # Database Subnets
