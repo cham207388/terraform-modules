@@ -45,6 +45,11 @@ resource "null_resource" "copy_ec2_keypair" {
   }
 
   provisioner "local-exec" {
+    command     = "sudo chmod 400 ${local.pemfile}"
+    working_dir = "${path.module}/"
+  }
+
+  provisioner "local-exec" {
     command     = "echo VPC created on `date` and VPC ID: ${module.vpc.vpc_id} >> creation-time-vpc-id.txt"
     working_dir = "${path.module}/"
   }
