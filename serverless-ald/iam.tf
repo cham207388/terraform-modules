@@ -35,7 +35,7 @@ resource "aws_iam_policy" "lambda_dynamodb_crud_policy" {
           "dynamodb:DeleteItem",
           "dynamodb:Scan"
         ],
-        Resource = "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${var.table_name}"
+        Resource = "arn:aws:dynamodb:${var.aws_region}:000000000000:table/${var.table_name}"
       }
     ]
   })
