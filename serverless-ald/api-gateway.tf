@@ -109,6 +109,6 @@ resource "aws_api_gateway_stage" "prod" {
 
 # CloudWatch Log Group for API Gateway
 resource "aws_cloudwatch_log_group" "api_gw" {
-  name              = "/aws/api-gateway/${aws_api_gateway_rest_api.api.name}"
+  name              = "/aws/api-gateway/${replace(aws_api_gateway_rest_api.api.name, " ", "-")}"
   retention_in_days = 7
 }
