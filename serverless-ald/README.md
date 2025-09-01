@@ -216,7 +216,7 @@ The module automatically configures CORS with:
 1. **Lambda Permission Error**: Ensure the `aws_lambda_permission` resource is created before API Gateway deployment
 2. **CORS Issues**: Verify the `allow_origin` variable is set correctly
 3. **Timeout Errors**: Lambda timeout is set to 300 seconds (5 minutes)
-4. **Missing Data Source**: The module automatically creates required data sources for `aws_caller_identity` and `aws_region`
+
 
 ### Important Notes
 

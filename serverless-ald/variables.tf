@@ -33,4 +33,8 @@ variable "api_description" {
 
 variable "allow_origin" {
   type = string
+} 
+
+variable "account_id" {
+  type = string
 }
