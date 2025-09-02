@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "course_management" {
   function_name = var.function_name
   handler       = var.handler
-  runtime       = "java21"
+  runtime       = var.runtime
   memory_size   = 512
   timeout       = 300
   role          = aws_iam_role.lambda_exec_role.arn

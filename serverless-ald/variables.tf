@@ -42,3 +42,12 @@ variable "account_id" {
 variable "lambda_environment_variables" {
   type = map(string)
 }
+
+variable "stage_name" {
+  type = string
+}
+
+variable "runtime" {
+  type = string
+  default = "java21"
+}

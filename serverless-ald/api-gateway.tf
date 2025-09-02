@@ -10,27 +10,6 @@ resource "aws_api_gateway_resource" "proxy" {
   path_part   = "{proxy+}"
 }
 
-# Enhanced CORS Configuration
-module "cors" {
-  source  = "squidfunk/api-gateway-enable-cors/aws"
-  version = "0.3.3"
-
-  api_id          = aws_api_gateway_rest_api.api.id
-  api_resource_id = aws_api_gateway_resource.proxy.id
-
-  allow_origin = "'${var.allow_origin}'"
-  allow_headers = [
-    "'Content-Type'",
-    "'X-Amz-Date'",
-    "'Authorization'",
-    "'X-Api-Key'",
-    "'X-Amz-Security-Token'",
-    "'X-Requested-With'"
-  ]
-  allow_methods     = ["'GET'", "'POST'", "'PUT'", "'DELETE'", "'OPTIONS'", "'PATCH'"]
-  allow_credentials = true
-}
-
 # API Methods with Integration Timeout
 resource "aws_api_gateway_method" "proxy" {
   rest_api_id   = aws_api_gateway_rest_api.api.id
@@ -74,7 +53,6 @@ resource "aws_api_gateway_deployment" "api" {
   depends_on = [
     aws_api_gateway_integration.lambda,
     aws_api_gateway_integration.lambda_root,
-    module.cors,
     aws_lambda_permission.allow_apigw
   ]
 
@@ -85,8 +63,8 @@ resource "aws_api_gateway_deployment" "api" {
   }
 }
 
-resource "aws_api_gateway_stage" "prod" {
-  stage_name    = "prod"
+resource "aws_api_gateway_stage" "dev" {
+  stage_name    = var.stage_name
   rest_api_id   = aws_api_gateway_rest_api.api.id
   deployment_id = aws_api_gateway_deployment.api.id
 

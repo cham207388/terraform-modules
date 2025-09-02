@@ -1,6 +1,8 @@
 output "api_gateway_url" {
-  value = "https://${aws_api_gateway_rest_api.api.id}.execute-api.${var.aws_region}.amazonaws.com/${aws_api_gateway_stage.prod.stage_name}"
-  description = "API Gateway URL"
+#   value = "https://${aws_api_gateway_rest_api.api.id}.execute-api.${var.aws_region}.amazonaws.com/${aws_api_gateway_stage.dev.stage_name}"
+#   description = "API Gateway URL"
+  value = "http://localhost.localstack.cloud:4566/restapis/${aws_api_gateway_rest_api.api.id}/${aws_api_gateway_stage.dev.stage_name}/_user_request_/"
+  description = "API Gateway URL (LocalStack)"
 }
 
 output "api_gateway_id" {
