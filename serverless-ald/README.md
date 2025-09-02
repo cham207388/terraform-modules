@@ -6,7 +6,12 @@ This Terraform module creates a complete serverless architecture with API Gatewa
 
 - **API Gateway**: REST API with proxy integration and CORS support
 - **Lambda Function**: Java 21 runtime with configurable memory and timeout
-- **DynamoDB Table**: Pay-per-request billing with proper IAM permissions
+- **DynamoDB Table**: Flexible table configuration with custom attributes and indexes
+  - Custom attributes with any DynamoDB data type (S, N, B, BOOL, etc.)
+  - Global Secondary Indexes (GSI) for flexible querying patterns
+  - Local Secondary Indexes (LSI) for range key queries
+  - Configurable billing mode (PAY_PER_REQUEST or PROVISIONED)
+  - Point-in-time recovery and encryption at rest
 - **IAM Roles**: Least privilege access policies for Lambda execution
 - **CloudWatch Logging**: Comprehensive logging for API Gateway and Lambda
 - **CORS Support**: Configurable CORS headers for web applications
@@ -32,7 +37,7 @@ module "serverless_ald" {
 }
 ```
 
-### Complete Example with VPC and Tags
+### Complete Example with Custom DynamoDB Attributes and GSIs
 
 ```hcl
 module "serverless_ald" {
@@ -43,8 +48,73 @@ module "serverless_ald" {
   filename      = "./lambda/course-management.jar"
   handler      = "com.example.CourseHandler::handleRequest"
   
-  # DynamoDB configuration
+  # DynamoDB configuration with custom attributes and GSIs
   table_name = "courses-table"
+  table_attributes = [
+    {
+      name = "id"
+      type = "S"
+    },
+    {
+      name = "name"
+      type = "S"
+    },
+    {
+      name = "location"
+      type = "S"
+    },
+    {
+      name = "date"
+      type = "S"
+    },
+    {
+      name = "category"
+      type = "S"
+    },
+    {
+      name = "price"
+      type = "N"
+    }
+  ]
+  
+  # Global Secondary Indexes for flexible querying
+  global_secondary_indexes = [
+    {
+      name            = "name-index"
+      hash_key        = "name"
+      projection_type = "ALL"
+    },
+    {
+      name            = "location-date-index"
+      hash_key        = "location"
+      range_key       = "date"
+      projection_type = "INCLUDE"
+      non_key_attributes = ["name", "category", "price"]
+    },
+    {
+      name            = "category-index"
+      hash_key        = "category"
+      projection_type = "KEYS_ONLY"
+    }
+  ]
+  
+  # Local Secondary Index (optional)
+  local_secondary_indexes = [
+    {
+      name            = "id-date-index"
+      range_key       = "date"
+      projection_type = "ALL"
+    }
+  ]
+  
+  # Billing configuration
+  billing_mode = "PAY_PER_REQUEST"  # or "PROVISIONED"
+  # read_capacity  = 5  # only needed for PROVISIONED
+  # write_capacity = 5  # only needed for PROVISIONED
+  
+  # Security features
+  enable_point_in_time_recovery = true
+  enable_encryption_at_rest     = true
   
   # Environment and region
   env        = "production"
@@ -101,15 +171,35 @@ This module uses the following external modules:
 | api_name | Name of the API Gateway | `string` | n/a | yes |
 | api_description | Description of the API Gateway | `string` | n/a | yes |
 | allow_origin | CORS allowed origin (e.g., "https://example.com" or "*") | `string` | n/a | yes |
+| account_id | AWS Account ID | `string` | n/a | yes |
+| lambda_environment_variables | Environment variables for Lambda function | `map(string)` | n/a | yes |
+| stage_name | API Gateway stage name | `string` | n/a | yes |
+| runtime | Lambda runtime | `string` | `"java21"` | no |
+| table_attributes | List of attributes for the DynamoDB table | `list(object({name=string, type=string}))` | `[{name="id", type="S"}]` | no |
+| global_secondary_indexes | List of Global Secondary Indexes | `list(object({name=string, hash_key=string, range_key=optional(string), projection_type=string, non_key_attributes=optional(list(string))}))` | `[]` | no |
+| local_secondary_indexes | List of Local Secondary Indexes | `list(object({name=string, range_key=string, projection_type=string, non_key_attributes=optional(list(string))}))` | `[]` | no |
+| billing_mode | DynamoDB billing mode (PROVISIONED or PAY_PER_REQUEST) | `string` | `"PAY_PER_REQUEST"` | no |
+| read_capacity | Read capacity units (only for PROVISIONED billing) | `number` | `5` | no |
+| write_capacity | Write capacity units (only for PROVISIONED billing) | `number` | `5` | no |
+| enable_point_in_time_recovery | Enable point-in-time recovery | `bool` | `true` | no |
+| enable_encryption_at_rest | Enable encryption at rest | `bool` | `true` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | api_gateway_url | URL of the deployed API Gateway |
-| lambda_function_arn | ARN of the Lambda function |
-| dynamodb_table_name | Name of the DynamoDB table |
+| api_gateway_id | ID of the API Gateway |
 | api_gateway_execution_arn | Execution ARN of the API Gateway |
+| lambda_function_arn | ARN of the Lambda function |
+| lambda_function_name | Name of the Lambda function |
+| dynamodb_table_name | Name of the DynamoDB table |
+| dynamodb_table_arn | ARN of the DynamoDB table |
+| dynamodb_table_id | ID of the DynamoDB table |
+| dynamodb_table_stream_arn | Stream ARN of the DynamoDB table |
+| dynamodb_table_stream_label | Stream label of the DynamoDB table |
+| dynamodb_global_secondary_index_names | List of Global Secondary Index names |
+| dynamodb_local_secondary_index_names | List of Local Secondary Index names |
 
 ## Architecture
 
@@ -169,6 +259,106 @@ public class CourseHandler implements RequestHandler<APIGatewayProxyRequestEvent
             .withHeaders(Map.of("Content-Type", "application/json"));
     }
 }
+```
+
+## DynamoDB Configuration
+
+The module provides flexible DynamoDB table configuration to support various use cases:
+
+### Table Attributes
+
+Define custom attributes for your table:
+
+```hcl
+table_attributes = [
+  {
+    name = "id"
+    type = "S"  # String
+  },
+  {
+    name = "name"
+    type = "S"  # String
+  },
+  {
+    name = "price"
+    type = "N"  # Number
+  },
+  {
+    name = "is_active"
+    type = "BOOL"  # Boolean
+  }
+]
+```
+
+**Supported Data Types:**
+- `S` - String
+- `N` - Number
+- `B` - Binary
+- `BOOL` - Boolean
+- `NULL` - Null
+- `SS` - String Set
+- `NS` - Number Set
+- `BS` - Binary Set
+- `L` - List
+- `M` - Map
+
+### Global Secondary Indexes (GSI)
+
+Create GSIs for flexible querying patterns:
+
+```hcl
+global_secondary_indexes = [
+  {
+    name            = "name-index"
+    hash_key        = "name"
+    projection_type = "ALL"  # Include all attributes
+  },
+  {
+    name            = "location-date-index"
+    hash_key        = "location"
+    range_key       = "date"
+    projection_type = "INCLUDE"
+    non_key_attributes = ["name", "category", "price"]
+  },
+  {
+    name            = "category-index"
+    hash_key        = "category"
+    projection_type = "KEYS_ONLY"  # Only key attributes
+  }
+]
+```
+
+**Projection Types:**
+- `ALL` - All table attributes
+- `KEYS_ONLY` - Only key attributes
+- `INCLUDE` - Key attributes + specified non-key attributes
+
+### Local Secondary Indexes (LSI)
+
+Create LSIs for range key queries on the same partition key:
+
+```hcl
+local_secondary_indexes = [
+  {
+    name            = "id-date-index"
+    range_key       = "date"
+    projection_type = "ALL"
+  }
+]
+```
+
+### Billing Configuration
+
+Choose between on-demand or provisioned billing:
+
+```hcl
+# On-demand billing (default)
+billing_mode = "PAY_PER_REQUEST"
+
+# Provisioned billing
+billing_mode = "PROVISIONED"
+read_capacity  = 10
+write_capacity = 5
 ```
 
 ## API Endpoints
