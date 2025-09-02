@@ -13,6 +13,10 @@ resource "aws_lambda_function" "course_management" {
     aws_iam_role_policy_attachment.lambda_logs,
     aws_iam_role_policy_attachment.lambda_dynamodb_crud_attach
   ]
+
+  environment {
+    variables = var.lambda_environment_variables
+  }
 }
 
 resource "aws_lambda_permission" "allow_apigw" {

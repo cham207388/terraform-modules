@@ -38,3 +38,7 @@ variable "allow_origin" {
 variable "account_id" {
   type = string
 }
+
+variable "lambda_environment_variables" {
+  type = map(string)
+}
