@@ -1,8 +1,8 @@
 # PostgreSQL Usage
 
-```bash
+```hcl
 module "postgres" {
-  source              = "git@github.com:cham207388/terraform-modules.git//postgres?ref=main"
+  source              = "github.com/cham207388/terraform-modules//postgres"
   db_name             = var.db_name
   username            = var.db_username
   password            = random_password.pg_password.result

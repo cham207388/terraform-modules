@@ -1,8 +1,8 @@
 # Keypair
 
-```bash
+```hcl
 module "keypair" {
-  source   = "git@github.com:cham207388/terraform-modules.git//keypair?ref=main"
+  source   = "github.com/cham207388/terraform-modules//keypair"
   filename = "${var.filename}"
 }
 ```
