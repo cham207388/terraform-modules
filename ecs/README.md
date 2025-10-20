@@ -61,7 +61,8 @@ No modules.
 
 ```hcl
 module "ecs" {
-  source = "./ecs"
+  <!-- source = "./ecs" -->
+  source = source = "git::https://github.com/cham207388/terraform-modules.git//ecs?ref=main"
   host_port = var.host_port
   container_port = var.container_port
   cpu = var.cpu
