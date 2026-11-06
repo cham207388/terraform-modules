@@ -30,6 +30,9 @@ tf-apply:
 	$(TF) apply -auto-approve
 
 tf-destroy:
+	$(TF) destroy -auto-approve
+
+tf-destroyp:
 	$(TF) plan -destroy -out=$(DESTROY_PLAN)
 	@printf "Apply this destroy plan? Type 'yes' to continue: "; \
 	IFS= read -r ans; \
